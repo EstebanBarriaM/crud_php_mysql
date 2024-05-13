@@ -23,9 +23,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="id_genero" class="form-label">Genero: </label>
-                        <select type="text" name="id_genero" id="id_genero" class="form-select" required>
+                        <label for="genero" class="form-label">Genero: </label>
+                        <select type="text" name="genero" id="genero" class="form-select" required>
                             <option value="">Seleccionar...</option>
+                            <?php while ($row_genero = $generos->fetch_assoc()) { ?>
+                                <option value="<?php echo $row_genero['id']; ?>"><?php echo $row_genero['nombre']; ?></option>
+                            <?php } ?>
                         </select>
                     </div>
 
@@ -44,6 +47,6 @@
             </div>
 
         </div>
-        
+
     </div>
 </div>

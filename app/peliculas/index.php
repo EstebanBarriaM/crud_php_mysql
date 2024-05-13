@@ -1,3 +1,7 @@
+<?php 
+    require '../config/database.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,6 +41,11 @@
         </table>
 
     </div>
+
+    <?php 
+        $sqlGenero = "SELECT id, nombre FROM genero";
+        $generos = $conn->query($sqlGenero);
+    ?>
 
     <?php include 'nuevoModal.php'; ?>
 
