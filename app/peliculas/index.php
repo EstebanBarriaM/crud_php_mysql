@@ -1,10 +1,15 @@
-<?php 
+<?php
+
+    session_start();
+
     require '../config/database.php';
 
     $sql = "SELECT p.id, p.nombre, p.descripcion, g.nombre AS genero FROM pelicula AS p
             INNER JOIN genero AS g
             ON p.id_genero=g.id";
     $peliculas = $conn->query($sql);
+
+    $dir = "posters/";
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +27,15 @@
     <div class="container py-3">
 
         <h2 class="text-center">Peliculas</h2>
+
+        <hr>
+
+        <?php if(isset($_SESSION['msg'])) { ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php echo $_SESSION['msg']; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php unset($_SESSION['msg']); } ?>
 
         <div class="row justify-content-end">
             <div class="col-auto">
@@ -47,7 +61,7 @@
                         <td> <?php echo $row_peliculas['nombre'] ?> </td>
                         <td> <?php echo $row_peliculas['descripcion'] ?> </td>
                         <td> <?php echo $row_peliculas['genero'] ?> </td>
-                        <td> IMAGEN </td>
+                        <td> <img src="<?= $dir .$row_peliculas['id'].'.jpg'; ?>" alt=""> </td>
                         <td>
                             <a href="#" data-bs-toggle="modal" data-bs-id="<?php echo $row_peliculas['id'] ?>" data-bs-target="#editarModal" class="btn btn-sm btn-warning"> <i class="fa-regular fa-pen-to-square"></i> Editar</a>
                             <a href="#" data-bs-toggle="modal" data-bs-id="<?php echo $row_peliculas['id'] ?>" data-bs-target="#eliminaModal" class="btn btn-sm btn-danger"> <i class="fa-solid fa-trash"></i> Eliminar</a>
