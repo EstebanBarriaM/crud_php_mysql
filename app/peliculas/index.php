@@ -1,7 +1,9 @@
 <?php 
     require '../config/database.php';
 
-    $sql = "SELECT * FROM pelicula";
+    $sql = "SELECT p.id, p.nombre, p.descripcion, g.nombre AS genero FROM pelicula AS p
+            INNER JOIN genero AS g
+            ON p.id_genero=g.id";
     $peliculas = $conn->query($sql);
 ?>
 
@@ -39,17 +41,18 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($peliculas as $pelicula) { ?>
-                <tr>
-                    <td> <?php echo $pelicula['id'] ?> </td>
-                    <td> <?php echo $pelicula['nombre'] ?> </td>
-                    <td> <?php echo $pelicula['descripcion'] ?> </td>
-                    <td> <?php echo $pelicula['id_genero'] ?> </td>
-                    <td> IMAGEN </td>
-                    <td>
-                        Editar|Eliminar
-                    </td>
-                </tr>
+                <?php while ($row_peliculas = $peliculas->fetch_assoc()) { ?>
+                    <tr>
+                        <td> <?php echo $row_peliculas['id'] ?> </td>
+                        <td> <?php echo $row_peliculas['nombre'] ?> </td>
+                        <td> <?php echo $row_peliculas['descripcion'] ?> </td>
+                        <td> <?php echo $row_peliculas['genero'] ?> </td>
+                        <td> IMAGEN </td>
+                        <td>
+                            <a href="#" data-bs-toggle="modal" data-bs-id="<?php echo $row_peliculas['id'] ?>" data-bs-target="#editarModal" class="btn btn-sm btn-warning"> <i class="fa-regular fa-pen-to-square"></i> Editar</a>
+                            <a href="#" class="btn btn-sm btn-danger"> <i class="fa-solid fa-trash"></i> Eliminar</a>
+                        </td>
+                    </tr>
                 <?php } ?>
             </tbody>
         </table>
@@ -62,6 +65,39 @@
     ?>
 
     <?php include 'nuevoModal.php'; ?>
+    <?php $generos->data_seek(0); ?>
+    <?php include 'editarModal.php' ?>
+
+    <script>
+
+        let editModal = document.getElementById('editarModal');
+
+        editModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget;
+            let id = button.getAttribute('data-bs-id');
+
+            let inputId = editModal.querySelector('.modal-body #id');
+            let inputNombre = editModal.querySelector('.modal-body #nombre');
+            let inputDescripcion = editModal.querySelector('.modal-body #descripcion');
+            let inputGenero = editModal.querySelector('.modal-body #genero');
+
+            let url = "getPelicula.php";
+            let formData = new FormData();
+            formData.append('id', id);
+
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                inputId.value = data.id;
+                inputNombre.value = data.nombre;
+                inputDescripcion.value = data.descripcion;
+                inputGenero.value = data.id_genero;
+            }).catch(err => console.log(err))
+        });
+
+    </script>
 
     <script src="../../assets/js/bootstrap.bundle.min.js"></script>
 </body>
