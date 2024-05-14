@@ -1,5 +1,8 @@
 <?php 
     require '../config/database.php';
+
+    $sql = "SELECT * FROM pelicula";
+    $peliculas = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +39,18 @@
                 </tr>
             </thead>
             <tbody>
-
+                <?php foreach ($peliculas as $pelicula) { ?>
+                <tr>
+                    <td> <?php echo $pelicula['id'] ?> </td>
+                    <td> <?php echo $pelicula['nombre'] ?> </td>
+                    <td> <?php echo $pelicula['descripcion'] ?> </td>
+                    <td> <?php echo $pelicula['id_genero'] ?> </td>
+                    <td> IMAGEN </td>
+                    <td>
+                        Editar|Eliminar
+                    </td>
+                </tr>
+                <?php } ?>
             </tbody>
         </table>
 
