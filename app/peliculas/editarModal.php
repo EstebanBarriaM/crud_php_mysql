@@ -10,7 +10,7 @@
 
             <div class="modal-body">
         
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="actualiza.php" method="POST" enctype="multipart/form-data">
 
                     <input type="hidden" id="id" name="id">
 

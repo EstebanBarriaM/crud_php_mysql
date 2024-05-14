@@ -50,7 +50,7 @@
                         <td> IMAGEN </td>
                         <td>
                             <a href="#" data-bs-toggle="modal" data-bs-id="<?php echo $row_peliculas['id'] ?>" data-bs-target="#editarModal" class="btn btn-sm btn-warning"> <i class="fa-regular fa-pen-to-square"></i> Editar</a>
-                            <a href="#" class="btn btn-sm btn-danger"> <i class="fa-solid fa-trash"></i> Eliminar</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-id="<?php echo $row_peliculas['id'] ?>" data-bs-target="#eliminaModal" class="btn btn-sm btn-danger"> <i class="fa-solid fa-trash"></i> Eliminar</a>
                         </td>
                     </tr>
                 <?php } ?>
@@ -67,10 +67,12 @@
     <?php include 'nuevoModal.php'; ?>
     <?php $generos->data_seek(0); ?>
     <?php include 'editarModal.php' ?>
+    <?php include 'eliminaModal.php' ?>
 
     <script>
 
         let editModal = document.getElementById('editarModal');
+        let eliminarModal = document.getElementById('eliminaModal');
 
         editModal.addEventListener('shown.bs.modal', event => {
             let button = event.relatedTarget;
@@ -95,6 +97,13 @@
                 inputDescripcion.value = data.descripcion;
                 inputGenero.value = data.id_genero;
             }).catch(err => console.log(err))
+        });
+
+        eliminarModal.addEventListener('show.bs.modal', event => {
+            let button = event.relatedTarget;
+            let id = button.getAttribute('data-bs-id');
+
+            eliminarModal.querySelector('.modal-footer #id').value = id;
         });
 
     </script>
